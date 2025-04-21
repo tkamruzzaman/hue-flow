@@ -16,12 +16,15 @@ public class UIManager : MonoBehaviour
         Instance = this;
         dialoguePopup.gameObject.SetActive(false);
 
-        nextButton.onClick.AddListener(() =>
+        if (nextButton != null)
         {
-            SceneManager.LoadScene(sceneNumber);
-        });
+            nextButton.onClick.AddListener(() =>
+            {
+                SceneManager.LoadScene(sceneNumber);
+            });
 
-        nextButton.gameObject.SetActive(false);
+            nextButton.gameObject.SetActive(false);
+        }
     }
 
     public void ShowDialoguePopup()

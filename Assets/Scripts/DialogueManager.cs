@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using NUnit.Framework.Internal;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class DialogueManager : MonoBehaviour
     [TextArea(3, 10)]
     [SerializeField] private string[] dialogueLines;
     [SerializeField] private string[] speakerNames;
+
+    [HideInInspector]public bool isDialoguePlaying;
+    bool isTesting;
 
     void Awake()
     {
@@ -45,6 +49,8 @@ public class DialogueManager : MonoBehaviour
     private IEnumerator DialogueSequence(string[] dialogues)
     {
         //print("::, " + dialogues);
+        isDialoguePlaying = true;
+
         for (int i = 0; i < dialogues.Length; i++)
         {
             if (speakerNameText != null && i < speakerNames.Length)
@@ -59,11 +65,13 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitUntil(() => !typewriter.isDisplayingText && !typewriter.isWaitingForClick);
 
             // Small delay between lines
-            yield return new WaitForSeconds(0.2f);
+            if (!isTesting) { yield return new WaitForSeconds(0.2f); }
         }
 
-        print("Dialogue sequence complete");
-        yield return new WaitForSeconds(3);
+        //print("Dialogue sequence complete");
+        if (!isTesting) { yield return new WaitForSeconds(3); }
+
+        isDialoguePlaying = false;
 
         UIManager.Instance.HideDialoguePopup();
     }

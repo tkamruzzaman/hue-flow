@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
+using DG.Tweening;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -11,15 +11,17 @@ public class GameManager : MonoBehaviour
     private List<List<Obstacle>> _layers = new();
     private int _currentLayerIndex = 0;
 
+    Vector3[] binPositions = { new(-7.8f, -3.7f, 0), new(-7.8f, 3.7f, 0), new(7.8f, -3.7f, 0), new(7.8f, 3.7f, 0) };
+
     void Awake()
     {
         Instance = this;
-        hiddenObject.sortingOrder = -1; 
+        hiddenObject.sortingOrder = -1;
     }
 
-    void Start(){
+    void Start()
+    {
         InitializeLayers();
-
     }
 
     void InitializeLayers()
@@ -40,7 +42,18 @@ public class GameManager : MonoBehaviour
     public void RemoveObstacle(Obstacle obstacle)
     {
         _layers[_currentLayerIndex].Remove(obstacle);
-        Destroy(obstacle.gameObject);
+
+        obstacle.transform.DOScale(obstacle.transform.localScale * 1.1f, 0.5f).OnComplete(() =>
+        {
+            obstacle.transform.DOMove(binPositions[UnityEngine.Random.Range(0, binPositions.Length)], 0.5f);
+            obstacle.transform.DOScale(obstacle.transform.localScale * 0f, 0.5f).OnComplete(() =>
+            {
+                //Destroy(obstacle.gameObject);
+                //obstacle.gameObject.SetActive(false);
+                obstacle._sr.enabled = false;
+                obstacle._collider.enabled = false;
+            });
+        });
 
         //  if layer cleared
         if (_layers[_currentLayerIndex].Count == 0)
@@ -68,6 +81,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
+
 }
 

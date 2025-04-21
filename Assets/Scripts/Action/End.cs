@@ -13,6 +13,8 @@ public class End : MonoBehaviour
 
     void OnMouseDown()
     {
+        if (DialogueManager.Instance.isDialoguePlaying) { return; }
+
         endScreen.SetActive(true);
     }
 }

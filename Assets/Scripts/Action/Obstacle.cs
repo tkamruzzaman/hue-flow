@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.Collections;
 using UnityEditor;
 #endif
 
@@ -6,11 +7,12 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-
     public int layerGroup = 1;
 
-    [SerializeField] private SpriteRenderer _sr;
-    [SerializeField] private Collider2D _collider;
+    [HideInInspector] public SpriteRenderer _sr;
+    [HideInInspector] public Collider2D _collider;
+    [Space]
+    [TextArea(3, 10)][SerializeField] string[] dialogues;
 
     void Awake()
     {
@@ -30,9 +32,20 @@ public class Obstacle : MonoBehaviour
 
     void OnMouseDown()
     {
-        print("Clickeddddd");
+        if (DialogueManager.Instance.isDialoguePlaying) { return; }
+
+        //print("Clickeddddd");
         GameManager.Instance.RemoveObstacle(this);
+        StartCoroutine(IE_StartDialouge());
     }
+
+    IEnumerator IE_StartDialouge()
+    {
+        yield return new WaitForSeconds(1);
+        DialogueManager.Instance.StartDialogue(dialogues);
+        gameObject.SetActive(false);
+    }
+
 #if UNITY_EDITOR
     void OnDrawGizmos()
     {
@@ -42,5 +55,6 @@ public class Obstacle : MonoBehaviour
             Handles.Label(transform.position, $"Layer: {layerGroup}\nOrder: {_sr.sortingOrder}");
         }
     }
-    #endif
+#endif
+
 }
