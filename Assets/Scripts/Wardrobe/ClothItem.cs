@@ -5,6 +5,7 @@ using UnityEngine;
 public class ClothItem : MonoBehaviour
 {
     [SerializeField] int clothItemId;
+    public bool isShown;
     [SerializeField] bool isSelected;
     [SerializeField] float scaleFactor = 1.1f;
 
@@ -42,6 +43,7 @@ public class ClothItem : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         DialogueManager.Instance.StartDialogue(clothPrompt);
+        isShown = true;
     }
 
     public void DeselectItem()

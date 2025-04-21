@@ -16,6 +16,25 @@ public class WardrobeController : MonoBehaviour
         CloseWardrobe();
     }
 
+    void Start()
+    {
+        InvokeRepeating(nameof(CheckIfAllShown), 0, 5);
+    }
+
+    void CheckIfAllShown()
+    {
+        bool flag = true;
+        foreach (ClothItem clothItem in clothes)
+        {
+            flag = flag && clothItem.isShown;
+        }
+        //print(flag);
+        if (flag)
+        {
+            UIManager.Instance.ActiveNextButton();
+        }
+    }
+
     public void CloseWardrobe()
     {
         isOpen = false;

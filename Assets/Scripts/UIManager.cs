@@ -6,18 +6,22 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    [SerializeField] Button nextButton;
-
     [SerializeField] RectTransform dialoguePopup;
+
+    [SerializeField] Button nextButton;
+    [SerializeField] int sceneNumber;
 
     void Awake()
     {
         Instance = this;
         dialoguePopup.gameObject.SetActive(false);
 
-        nextButton.onClick.AddListener(()=>{
-            SceneManager.LoadScene(2); // Journey
+        nextButton.onClick.AddListener(() =>
+        {
+            SceneManager.LoadScene(sceneNumber);
         });
+
+        nextButton.gameObject.SetActive(false);
     }
 
     public void ShowDialoguePopup()
@@ -29,5 +33,14 @@ public class UIManager : MonoBehaviour
     {
         dialoguePopup.gameObject.SetActive(false);
 
+        if (SceneManager.GetActiveScene().buildIndex == 0) //title scene
+        {
+            ActiveNextButton();
+        }
+    }
+
+    public void ActiveNextButton()
+    {
+        nextButton.gameObject.SetActive(true);
     }
 }

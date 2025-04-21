@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -16,6 +17,14 @@ public class DialogueManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+    }
+
+    void Start()
+    {
+        if (SceneManager.GetActiveScene().buildIndex == 0) //title scene
+        {
+            StartDialogue(dialogueLines);
+        }
     }
 
     public void StartDialogue(string[] dialogues)
@@ -35,7 +44,7 @@ public class DialogueManager : MonoBehaviour
 
     private IEnumerator DialogueSequence(string[] dialogues)
     {
-        print("::, " + dialogues);
+        //print("::, " + dialogues);
         for (int i = 0; i < dialogues.Length; i++)
         {
             if (speakerNameText != null && i < speakerNames.Length)
