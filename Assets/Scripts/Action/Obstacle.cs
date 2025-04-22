@@ -1,8 +1,4 @@
-#if UNITY_EDITOR
 using System.Collections;
-using UnityEditor;
-#endif
-
 using UnityEngine;
 
 public class Obstacle : MonoBehaviour
@@ -45,16 +41,5 @@ public class Obstacle : MonoBehaviour
         DialogueManager.Instance.StartDialogue(dialogues);
         gameObject.SetActive(false);
     }
-
-#if UNITY_EDITOR
-    void OnDrawGizmos()
-    {
-        if (_sr != null)
-        {
-            GUI.color = Color.red;
-            Handles.Label(transform.position, $"Layer: {layerGroup}\nOrder: {_sr.sortingOrder}");
-        }
-    }
-#endif
 
 }
